@@ -1,0 +1,24 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
+
+page = "https://www.transfermarkt.de/bayer-04-leverkusen/kader/verein/15/saison_id/2023"
+pageTree = requests.get(page, headers=headers)
+pageSoup = BeautifulSoup(pageTree.text, 'html.parser')
+
+PlayersList = []
+
+table = pageSoup.find(id="yw1")
+players = table.find_all('img', {"class": "bilderrahmen-fixed lazy lazy"})
+
+for player in players:
+    # Extract player data here
+    player_name = player.get('alt')
+    PlayersList.append(player_name)
+
+print(*PlayersList, sep="\n")
+
+if pageTree.status_code != 200:
+    print(f"Failed to fetch the page. Status code: {pageTree.status_code}")
