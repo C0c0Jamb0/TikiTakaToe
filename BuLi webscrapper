@@ -1,0 +1,43 @@
+import requests
+from bs4 import BeautifulSoup
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
+
+page = "https://www.transfermarkt.de/bundesliga/startseite/wettbewerb/L1/plus/?saison_id=2023"
+pageTree = requests.get(page, headers=headers)
+pageSoup = BeautifulSoup(pageTree.text, 'html.parser')
+
+teamLinks = []
+
+buli_team_elements = pageSoup.find_all(class_="hauptlink no-border-links")
+
+for buli_team_element in buli_team_elements:
+    # Extract team_links data here
+    team_link = buli_team_element.find("a").get("href")
+    teamLinks.append(team_link)
+
+for team_link in teamLinks:
+    team_url = "https://www.transfermarkt.de" + team_link
+    team_page = requests.get(team_url, headers=headers)
+    team_soup = BeautifulSoup(team_page.text, 'html.parser')
+
+    # Get team name
+    team = team_soup.find(class_="data-header__headline-wrapper--oswald")
+    team_name = team.text.strip()
+
+    # Get player names
+    players = team_soup.find_all('img', {"class": "bilderrahmen-fixed lazy lazy"})
+
+    # Print the team name before listing players
+    print(f"Team: {team_name}")
+
+    player_count = 0
+
+    for player in players:
+        # Extract player data here
+        player_name = player.get('alt')
+        player_count += 1
+        print(f"{player_count}. Player: {player_name}")
+
+    print()  # Add an empty line to separate teams

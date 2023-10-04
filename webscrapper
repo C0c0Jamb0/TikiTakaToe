@@ -4,21 +4,21 @@ import pandas as pd
 
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
-page = "https://www.transfermarkt.de/bayer-04-leverkusen/kader/verein/15/saison_id/2023"
+page = "https://www.transfermarkt.de/bundesliga/startseite/wettbewerb/L1/plus/?saison_id=2023"
 pageTree = requests.get(page, headers=headers)
 pageSoup = BeautifulSoup(pageTree.text, 'html.parser')
 
 PlayersList = []
 teams =[]
 
-#team_name = pageSoup.find('h1', {'itemprop': 'name'}).text.strip()
-#teams.append(team_name)
 
 
 
+# get player names
 table = pageSoup.find(id="yw1")
 players = table.find_all('img', {"class": "bilderrahmen-fixed lazy lazy"})
 
+# get team name
 team = pageSoup.find(class_="data-header__headline-wrapper--oswald")
 team_name = team.text.strip()
 
