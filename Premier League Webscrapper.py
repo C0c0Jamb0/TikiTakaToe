@@ -17,7 +17,7 @@ seasons = range(2000, 2024)
 
 for season in seasons:
     # Construct the URL for the specific season
-    page = f"https://www.transfermarkt.de/bundesliga/startseite/wettbewerb/L1/plus/?saison_id={season}"
+    page = f"https://www.transfermarkt.de/premier-league/startseite/wettbewerb/GB1/plus/?saison_id={season}"
     pageTree = requests.get(page, headers=headers)
     
     # Set the encoding to UTF-8
@@ -63,7 +63,7 @@ for season in seasons:
 df = pd.DataFrame(all_team_data, columns=['Season', 'Team', 'Player Names'])
 
 # Save the DataFrame to a CSV file with UTF-8 encoding
-df.to_csv('bundesliga_players_by_season.csv', index=False, encoding='utf-8-sig')
+df.to_csv('premierleague_players_by_season.csv', index=False, encoding='utf-8-sig')
 
 # Print the DataFrame
 print(df)
