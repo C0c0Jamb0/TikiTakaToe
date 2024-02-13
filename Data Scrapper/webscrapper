@@ -9,13 +9,12 @@ pageTree = requests.get(page, headers=headers)
 pageSoup = BeautifulSoup(pageTree.text, 'html.parser')
 
 PlayersList = []
-teams =[]
+table = pageSoup.find(id="yw1")
 
 
 
 
 # get player names
-table = pageSoup.find(id="yw1")
 players = table.find_all('img', {"class": "bilderrahmen-fixed lazy lazy"})
 
 # get team name
